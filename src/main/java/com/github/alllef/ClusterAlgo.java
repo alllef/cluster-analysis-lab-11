@@ -13,12 +13,17 @@ public abstract class ClusterAlgo {
     }
 
     public void calculateDistances(double[][] data) {
+
         distanceMatrix = new double[data.length][];
+        int tmpMatrixIter = 0;
 
         for (int i = 0; i < distanceMatrix.length; i++) {
-            for (int j = 0; j < distanceMatrix.length; j++)
+                data[i] = new double[distanceMatrix.length-tmpMatrixIter];
+
+            for (int j = tmpMatrixIter++; j <distanceMatrix.length ; j++)
                 distanceMatrix[i][j] = calculateEuclidianDistance(data[i], data[j]);
         }
+
     }
 
     ClusterAlgo(double[][] data) {

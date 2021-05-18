@@ -11,8 +11,9 @@ public class TreeClusterAlgo extends ClusterAlgo {
     }
 
     public void calculateResult() {
+
         PriorityQueue<PriorityRecord> distanceQueue = new PriorityQueue<>(Comparator.comparingDouble(PriorityRecord::distance));
-        HashMap<Integer, Integer> rowClusterPath = new HashMap<>();
+        Map<Integer, Integer> rowClusterPath = new HashMap<>();
 
         for (int i = 0; i < distanceMatrix.length; i++) {
             for (int j = 0; j < distanceMatrix[i].length; j++)
@@ -20,30 +21,36 @@ public class TreeClusterAlgo extends ClusterAlgo {
         }
 
         do {
-            clusters.add(getClusterByNearestNeighbor(distanceQueue.poll(), rowClusterPath));
-        } while (clusters.get(clusters.size() - 1).size() < distanceMatrix.length);
+
+            PriorityRecord rec = distanceQueue.poll();
+            Map<Integer, Integer> clusterPathTuple = new HashMap<>();
+
+            clusterPathTuple.put(rec.firstRowIdentifier(), rowClusterPath.get(rec.firstRowIdentifier()));
+            clusterPathTuple.put(rec.secondRowIdentifier(), rowClusterPath.get(rec.secondRowIdentifier()));
+            List<Integer> cluster = getClusterByNearestNeighbor(clusterPathTuple);
+            clusters.add(cluster);
+
+            for (Integer row : cluster)
+                rowClusterPath.put(row, clusters.size());
+
+        } while (clusters.get(clusters.size()-1).size() < distanceMatrix.length);
 
     }
 
-    List<Integer> getClusterByNearestNeighbor(PriorityRecord record, HashMap<Integer, Integer> clusterPath) {
+    List<Integer> getClusterByNearestNeighbor(Map<Integer, Integer> clusterPathTuple) {
 
+        //boolean b = false;
         List<Integer> cluster = new ArrayList<>();
-        List<Integer> recTuple = new ArrayList<>(Arrays.asList(record.firstRowIdentifier(), record.secondRowIdentifier()));
-        boolean b = false;
 
-        for (Integer tmpRecord : recTuple) {
+        for (Integer key : clusterPathTuple.keySet()) {
 
-            int num = Integer.parseInt(String.valueOf(b));
-            if (clusterPath.containsKey(tmpRecord))
-                cluster.addAll(clusters.get(clusterPath.get(tmpRecord)));
+            //int num = Integer.parseInt(String.valueOf(b));
+            if (clusterPathTuple.get(key) != null)
+                cluster.addAll(clusters.get(clusterPathTuple.get(key)));
             else
-                cluster.add(tmpRecord);
-            cluster.add(recTuple.get(num));
+                cluster.add(key);
 
-            for (Integer row : cluster)
-                clusterPath.put(row, cluster.size() + 1);
-
-            b = !b;
+           // b = !b;
         }
 
         return cluster;
