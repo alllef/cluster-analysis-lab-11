@@ -1,4 +1,4 @@
-package com.github.alllef;
+package com.github.alllef.clusteralgos;
 
 import java.util.*;
 
@@ -25,34 +25,29 @@ public class TreeClusterAlgo extends ClusterAlgo {
             PriorityRecord rec = distanceQueue.poll();
             Map<Integer, Integer> clusterPathTuple = new HashMap<>();
 
-            clusterPathTuple.put(rec.firstRowIdentifier(), rowClusterPath.get(rec.firstRowIdentifier()));
-            clusterPathTuple.put(rec.secondRowIdentifier(), rowClusterPath.get(rec.secondRowIdentifier()));
+            clusterPathTuple.put(rec.firstRowId(), rowClusterPath.get(rec.firstRowId()));
+            clusterPathTuple.put(rec.secondRowId(), rowClusterPath.get(rec.secondRowId()));
             List<Integer> cluster = getClusterByNearestNeighbor(clusterPathTuple);
             clusters.add(cluster);
 
             for (Integer row : cluster)
                 rowClusterPath.put(row, clusters.size());
 
-        } while (clusters.get(clusters.size()-1).size() < distanceMatrix.length);
+        } while (clusters.get(clusters.size() - 1).size() < distanceMatrix.length);
 
     }
 
     List<Integer> getClusterByNearestNeighbor(Map<Integer, Integer> clusterPathTuple) {
 
-        //boolean b = false;
         List<Integer> cluster = new ArrayList<>();
 
         for (Integer key : clusterPathTuple.keySet()) {
 
-            //int num = Integer.parseInt(String.valueOf(b));
             if (clusterPathTuple.get(key) != null)
                 cluster.addAll(clusters.get(clusterPathTuple.get(key)));
             else
                 cluster.add(key);
-
-           // b = !b;
         }
-
         return cluster;
     }
 

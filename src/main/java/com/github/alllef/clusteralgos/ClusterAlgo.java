@@ -1,4 +1,4 @@
-package com.github.alllef;
+package com.github.alllef.clusteralgos;
 
 public abstract class ClusterAlgo {
     public double[][] distanceMatrix;
