@@ -7,12 +7,19 @@ import java.util.*;
 
 public class DataUtility {
 
-    private double[][]data;
+    private double[][] data;
 
-DataUtility(File fileToRead){
-    readNumData(fileToRead);
-}
+    public DataUtility(File fileToRead) {
+        readNumData(fileToRead);
+    }
 
+    public double[][] getData() {
+        return data;
+    }
+
+    public void setData(double[][] data) {
+        this.data = data;
+    }
 
     public double[][] readNumData(File fileToRead) {
         List<double[]> dataList = new ArrayList<>();
@@ -28,7 +35,7 @@ DataUtility(File fileToRead){
             e.printStackTrace();
         }
 
-         data = new double[dataList.size()][];
+        data = new double[dataList.size()][];
 
         for (int i = 0; i < data.length; i++)
             data[i] = dataList.get(i);

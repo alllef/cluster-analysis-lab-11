@@ -1,7 +1,13 @@
 package com.github.alllef.clusteralgos;
 
+import java.util.Arrays;
+
 public abstract class ClusterAlgo {
     public double[][] distanceMatrix;
+
+    ClusterAlgo(double[][] data) {
+        calculateDistances(data);
+    }
 
     public double calculateEuclidianDistance(double[] x, double[] y) {
         double result = 0;
@@ -18,16 +24,15 @@ public abstract class ClusterAlgo {
         int tmpMatrixIter = 0;
 
         for (int i = 0; i < distanceMatrix.length; i++) {
-                data[i] = new double[distanceMatrix.length-tmpMatrixIter];
+            distanceMatrix[i] = new double[tmpMatrixIter];
 
-            for (int j = tmpMatrixIter++; j <distanceMatrix.length ; j++)
+            for (int j = 0; j <  tmpMatrixIter; j++)
                 distanceMatrix[i][j] = calculateEuclidianDistance(data[i], data[j]);
+            System.out.println(Arrays.toString(distanceMatrix[i]));
+            tmpMatrixIter++;
         }
 
-    }
 
-    ClusterAlgo(double[][] data) {
-        calculateDistances(data);
     }
 
     public abstract void calculateResult();
