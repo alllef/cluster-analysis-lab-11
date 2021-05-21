@@ -3,13 +3,30 @@ package com.github.alllef.clusteralgos;
 import java.util.*;
 
 public class TreeClusterAlgo extends ClusterAlgo {
-
+    public double[][] distanceMatrix;
     List<List<Integer>> clusters = new ArrayList<>();
 
     public TreeClusterAlgo(double[][] data) {
         super(data);
+        calculateDistances();
     }
 
+    public void calculateDistances() {
+
+        distanceMatrix = new double[data.length][];
+        int tmpMatrixIter = 0;
+
+        for (int i = 0; i < distanceMatrix.length; i++) {
+            distanceMatrix[i] = new double[tmpMatrixIter];
+
+            for (int j = 0; j < tmpMatrixIter; j++)
+                distanceMatrix[i][j] = calculateEuclidianDistance(data[i], data[j]);
+            System.out.println(Arrays.toString(distanceMatrix[i]));
+            tmpMatrixIter++;
+        }
+    }
+
+    @Override
     public void calculateResult() {
 
         PriorityQueue<PriorityRecord> distanceQueue = new PriorityQueue<>(Comparator.comparingDouble(PriorityRecord::distance));
@@ -29,7 +46,7 @@ public class TreeClusterAlgo extends ClusterAlgo {
             clusterPathTuple.put(rec.secondRowId(), rowClusterPath.get(rec.secondRowId()));
 
             if (rowClusterPath.get(rec.firstRowId()) != null && rowClusterPath.get(rec.secondRowId()) != null) {
-                if ((int)clusterPathTuple.get(rec.firstRowId()) == (clusterPathTuple.get(rec.secondRowId()))) continue;
+                if ((int) clusterPathTuple.get(rec.firstRowId()) == (clusterPathTuple.get(rec.secondRowId()))) continue;
             }
 
             List<Integer> cluster = getClusterByNearestNeighbor(clusterPathTuple);
@@ -43,19 +60,15 @@ public class TreeClusterAlgo extends ClusterAlgo {
     }
 
     List<Integer> getClusterByNearestNeighbor(Map<Integer, Integer> clusterPathTuple) {
-        //System.out.println(clusterPathTuple);
+
         List<Integer> cluster = new ArrayList<>();
-        //int i = 0;
         for (Integer key : clusterPathTuple.keySet()) {
 
-            if (clusterPathTuple.get(key) == null /*&& !cluster.contains(key)*/)
+            if (clusterPathTuple.get(key) == null)
                 cluster.add(key);
-
-            else {
+            else
                 cluster.addAll(clusters.get(clusterPathTuple.get(key)));
-                //      System.out.println("Added cluster"+clusters.get(clusterPathTuple.get(key)));
-            }
-            //i++;
+
         }
 
         return cluster;
