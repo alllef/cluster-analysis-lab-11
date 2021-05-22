@@ -1,6 +1,7 @@
 package com.github.alllef.clusteralgos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class KMedianClusterAlgo extends ClusterAlgo {
@@ -24,7 +25,9 @@ public class KMedianClusterAlgo extends ClusterAlgo {
         List<List<Integer>> prevClusters = initializeCLuster();
 
         while (!areEqualClusters(prevClusters)) {
+
             prevClusters = initializeCLuster();
+            clusters = initializeCLuster();
 
             recalculateCenters();
             classifyData();
@@ -36,9 +39,27 @@ public class KMedianClusterAlgo extends ClusterAlgo {
                     prevClusters.get(i).add(clusters.get(i).get(j));
             }
 
-            clusters = initializeCLuster();
+
         }
 
+    }
+
+    boolean areEqualClusters(List<List<Integer>> prevClusters) {
+        prevClusters.sort(Comparator.comparingInt(List::size));
+        clusters.sort(Comparator.comparingInt(List::size));
+
+        for (int i = 0; i < clusters.size(); i++) {
+            prevClusters.get(i).sort(Double::compare);
+            clusters.get(i).sort(Double::compare);
+        }
+
+        for (int i = 0; i < clusters.size(); i++) {
+            if (clusters.get(i).size() != prevClusters.get(i).size()) return false;
+            for (int j = 0; j < clusters.get(i).size(); j++) {
+                if (!clusters.get(i).get(j).equals(prevClusters.get(i).get(j))) return false;
+            }
+        }
+        return true;
     }
 
 
@@ -48,15 +69,6 @@ public class KMedianClusterAlgo extends ClusterAlgo {
         for (int i = 0; i < clusterNumber; i++)
             tmpClusters.add(new ArrayList<>());
         return tmpClusters;
-    }
-
-    private boolean areEqualClusters(List<List<Integer>> clusterToEqual) {
-
-        for (int i = 0; i < clusters.size(); i++) {
-            if (!clusters.get(i).equals(clusterToEqual.get(i))) return false;
-        }
-
-        return true;
     }
 
     private void classifyData() {
