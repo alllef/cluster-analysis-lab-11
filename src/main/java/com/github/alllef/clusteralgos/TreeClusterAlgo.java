@@ -5,6 +5,7 @@ import java.util.*;
 public class TreeClusterAlgo extends ClusterAlgo {
     public double[][] distanceMatrix;
     List<List<Integer>> clusters = new ArrayList<>();
+    List<Double> clusterDistances = new ArrayList<>();
 
     public TreeClusterAlgo(double[][] data) {
         super(data);
@@ -21,9 +22,9 @@ public class TreeClusterAlgo extends ClusterAlgo {
 
             for (int j = 0; j < tmpMatrixIter; j++)
                 distanceMatrix[i][j] = calculateEuclidianDistance(data[i], data[j]);
-            System.out.println(Arrays.toString(distanceMatrix[i]));
             tmpMatrixIter++;
         }
+
     }
 
     @Override
@@ -49,6 +50,7 @@ public class TreeClusterAlgo extends ClusterAlgo {
                 if ((int) clusterPathTuple.get(rec.firstRowId()) == (clusterPathTuple.get(rec.secondRowId()))) continue;
             }
 
+            clusterDistances.add(rec.distance());
             List<Integer> cluster = getClusterByNearestNeighbor(clusterPathTuple);
             clusters.add(cluster);
 

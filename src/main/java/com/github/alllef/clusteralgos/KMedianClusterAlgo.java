@@ -31,14 +31,11 @@ public class KMedianClusterAlgo extends ClusterAlgo {
 
             recalculateCenters();
             classifyData();
-            clusters.forEach((c) -> System.out.println(c.size()));
-            System.out.println();
 
             for (int i = 0; i < clusters.size(); i++) {
                 for (int j = 0; j < clusters.get(i).size(); j++)
                     prevClusters.get(i).add(clusters.get(i).get(j));
             }
-
 
         }
 
