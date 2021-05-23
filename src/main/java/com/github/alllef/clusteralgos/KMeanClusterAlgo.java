@@ -41,6 +41,23 @@ public class KMeanClusterAlgo extends ClusterAlgo {
 
     }
 
+    public void calculateOtherResult() {
+        prepareData();
+
+        double stopCriteria = getStopCriteria();
+        double prevStopCriteria = 0;
+        double epsilon = 0;
+
+        while (stopCriteria - prevStopCriteria > epsilon) {
+            System.out.println(stopCriteria);
+            recalculateCenters();
+            classifyData();
+            prevStopCriteria = stopCriteria;
+            stopCriteria = getStopCriteria();
+        }
+
+    }
+
     private double getStopCriteria() {
         double stopCriteria = 0;
         for (int i = 0; i < clusters.size(); i++) {
