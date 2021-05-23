@@ -1,7 +1,6 @@
 package com.github.alllef;
 
 import com.github.alllef.clusteralgos.ClusterAlgo;
-import com.github.alllef.clusteralgos.KMedianClusterAlgo;
 import com.github.alllef.clusteralgos.TreeClusterAlgo;
 import com.github.alllef.datautils.DataUtility;
 

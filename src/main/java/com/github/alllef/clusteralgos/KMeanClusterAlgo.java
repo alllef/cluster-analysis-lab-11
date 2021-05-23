@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class KMedianClusterAlgo extends ClusterAlgo {
+public class KMeanClusterAlgo extends ClusterAlgo {
 
     int clusterNumber;
     double[][] centers;
     List<List<Integer>> clusters;
 
-    public KMedianClusterAlgo(double[][] data, int clusterNumber) {
+    public KMeanClusterAlgo(double[][] data, int clusterNumber) {
 
         super(data);
         this.clusterNumber = clusterNumber;
@@ -39,6 +39,15 @@ public class KMedianClusterAlgo extends ClusterAlgo {
 
         }
 
+    }
+
+    private double getStopCriteria() {
+        double stopCriteria = 0;
+        for (int i = 0; i < clusters.size(); i++) {
+            for (int j = 0; j < clusters.get(i).size(); j++)
+                stopCriteria += calculateEuclideanDistance(data[j], centers[i]);
+        }
+        return stopCriteria;
     }
 
     boolean areEqualClusters(List<List<Integer>> prevClusters) {
@@ -107,7 +116,7 @@ public class KMedianClusterAlgo extends ClusterAlgo {
         double minCenterDistance = Double.MAX_VALUE;
 
         for (int i = 0; i < centers.length; i++) {
-            double distance = calculateEuclidianDistance(centers[i], data[curRow]);
+            double distance = calculateEuclideanDistance(centers[i], data[curRow]);
 
             if (distance < minCenterDistance) {
                 minCenterDistance = distance;

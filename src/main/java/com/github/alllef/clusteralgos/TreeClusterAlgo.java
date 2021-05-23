@@ -21,7 +21,7 @@ public class TreeClusterAlgo extends ClusterAlgo {
             distanceMatrix[i] = new double[tmpMatrixIter];
 
             for (int j = 0; j < tmpMatrixIter; j++)
-                distanceMatrix[i][j] = calculateEuclidianDistance(data[i], data[j]);
+                distanceMatrix[i][j] = calculateEuclideanDistance(data[i], data[j]);
             tmpMatrixIter++;
         }
 
